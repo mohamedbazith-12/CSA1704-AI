@@ -1,0 +1,19 @@
+# alphabeta.py
+import math
+def alphabeta(node, depth, alpha, beta, maximizingPlayer, children_fn, eval_fn):
+    if depth==0 or not children_fn(node): return eval_fn(node)
+    if maximizingPlayer:
+        value = -math.inf
+        for child in children_fn(node):
+            value = max(value, alphabeta(child, depth-1, alpha, beta, False, children_fn, eval_fn))
+            alpha = max(alpha, value)
+            if alpha >= beta: break
+        return value
+    else:
+        value = math.inf
+        for child in children_fn(node):
+            value = min(value, alphabeta(child, depth-1, alpha, beta, True, children_fn, eval_fn))
+            beta = min(beta, value)
+            if alpha >= beta: break
+        return value
+# For TicTacToe you can define children_fn and eval_fn using board states and call this.
